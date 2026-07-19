@@ -1,0 +1,13 @@
+\usepackage{graphicx}
+\usepackage{fancyhdr}
+\setlength{\headheight}{52bp}
+\fancypagestyle{whitestonefirst}{%
+  \fancyhf{}%
+  \fancyhead[L]{\includegraphics[alt={The Whitestone Foundation logo},width=48bp,height=48bp,keepaspectratio]{tmp/pdfs/whitestone-logo-64.png}}%
+  \fancyhead[R]{\textbf{The Whitestone Foundation}}%
+  \renewcommand{\headrulewidth}{0.4pt}%
+}
+\AtBeginDocument{\hypersetup{
+  pdfpublisher={The Whitestone Foundation},
+  pdfcopyright={Copyright Adam DJ Brett. Published by The Whitestone Foundation.}
+}}

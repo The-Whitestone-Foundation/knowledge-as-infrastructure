@@ -10,6 +10,7 @@ Built on the [Academic Paper](https://github.com/aterenin/academic-paper) theme 
 npm install
 npm start      # dev server at http://localhost:8080
 npm run build  # eleventy + pagefind into _site/
+./scripts/build-pdf.sh  # tagged PDF/UA-2 publication into output/pdf/
 ```
 
 ## Structure
