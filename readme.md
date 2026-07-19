@@ -1,5 +1,7 @@
 # Knowledge as Infrastructure
 
+[![Listed on BundleDex](https://bundledex.net/badge.svg)](https://bundledex.net/bundles/knowledge-as-infrastructure/)
+
 An [Eleventy](https://www.11ty.dev/) site for the whitepaper *From Knowledge to Context: Building a Google Open Knowledge Format Pipeline That Feeds a Local, Private MCP*.
 
 Built on the [Academic Paper](https://github.com/aterenin/academic-paper) theme (MIT, Alexander Terenin), ported from `11ty-academic-paper`.
