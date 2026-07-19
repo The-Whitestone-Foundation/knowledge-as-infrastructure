@@ -1,0 +1,55 @@
+{% set paperData = paper or site.paperDefaults %}
+{% set pageTitle = title or site.title %}
+{% set pageDescription = description or site.description %}
+{% set canonical = (site.pathPrefix ~ (page.url or "/")) | absoluteUrl(site.url) %}
+{% set cardPath = paperData.card or site.cardImage %}
+{% set cardImage = cardPath | absoluteUrl(site.url) %}
+<!DOCTYPE html>
+<html lang="{{ site.language }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="{{ site.pathPrefix }}/main.css">
+  <link rel="stylesheet" href="{{ site.pathPrefix }}/print.css" media="print">
+  {% if (paperData.favicon == true) or (paperData.favicon != false and site.favicon == true) %}
+    <link rel="shortcut icon" type="image/x-icon" href="{{ site.pathPrefix }}/favicon.ico">
+    <link rel="apple-touch-icon" href="{{ site.pathPrefix }}/apple-touch-icon.png" type="image/png">
+  {% endif %}
+  {% if paperData.katex %}
+    {% include "partials/katex.njk" %}
+  {% endif %}
+  <title>{{ pageTitle }}</title>
+  {% if paperData.authors and paperData.authors.length %}
+    <meta name="author" content="{% for author in paperData.authors %}{{ author.name }}{% if not loop.last %}, {% endif %}{% endfor %}">
+  {% endif %}
+  {% if pageDescription %}
+    <meta name="description" content="{{ pageDescription }}">
+    <meta property="og:description" content="{{ pageDescription }}">
+  {% endif %}
+  <meta property="og:title" content="{{ pageTitle }}">
+  <link rel="canonical" href="{{ canonical }}">
+  <meta property="og:url" content="{{ canonical }}">
+  <meta property="og:image" content="{{ cardImage }}">
+  <meta property="og:image:type" content="image/png">
+  <meta property="og:type" content="article">
+  {% if paperData.largeCard or site.largeCard %}
+    <meta name="twitter:card" content="summary_large_image">
+  {% else %}
+    <meta name="twitter:card" content="summary">
+  {% endif %}
+  <meta property="twitter:image" content="{{ cardImage }}">
+  <meta property="twitter:title" content="{{ pageTitle }}">
+</head>
+<body>
+  <header class="whitestone-nav">
+    <a class="whitestone-brand" href="/" aria-label="The Whitestone Foundation home">
+      <img src="/images/whitestone-logo-square-transparent.svg" alt="" width="64" height="64">
+      <span>The Whitestone Foundation</span>
+    </a>
+    <nav aria-label="The Whitestone Foundation">
+      {% for item in site.navigation %}<a href="{{ item.url }}">{{ item.label }}</a>{% endfor %}
+    </nav>
+  </header>
+  {{ content | safe }}
+</body>
+</html>

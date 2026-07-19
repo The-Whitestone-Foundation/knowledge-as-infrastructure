@@ -1,0 +1,15 @@
+{% macro icon(name) %}
+  {% if name == "code" %}
+    {% include "icons/code.njk" %}
+  {% elif name == "paper" %}
+    {% include "icons/paper.njk" %}
+  {% elif name == "pdf" %}
+    {% include "icons/pdf.njk" %}
+  {% elif name == "poster" %}
+    {% include "icons/poster.njk" %}
+  {% elif name == "slides" %}
+    {% include "icons/slides.njk" %}
+  {% elif name == "video" %}
+    {% include "icons/video.njk" %}
+  {% endif %}
+{% endmacro %}

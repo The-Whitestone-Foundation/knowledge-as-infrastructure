@@ -1,0 +1,41 @@
+---
+permalink: /humans.txt
+eleventyExcludeFromCollections: true
+---
+/* THEME PORT CREDIT */
+Theme: {{ site.themeName }}
+Original Theme Homepage: {{ site.themeHomepage }}
+Original Theme Author: {{ site.themeAuthor }}
+Original Theme License: {{ site.themeLicense }}
+Original Theme Demo: {{ site.themeDemo }}
+
+/* GITHUB AUTHORS */
+{% if humans.authors and humans.authors.length %}
+{% for author in humans.authors %}
+- {{ author }}
+{% endfor %}
+{% else %}
+- none found
+{% endif %}
+
+/* GITHUB CONTRIBUTORS */
+{% if humans.contributors and humans.contributors.length %}
+{% for contributor in humans.contributors %}
+- {{ contributor }}
+{% endfor %}
+{% else %}
+- none found
+{% endif %}
+
+/* GITHUB CO-AUTHORS */
+{% if humans.coauthors and humans.coauthors.length %}
+{% for coauthor in humans.coauthors %}
+- {{ coauthor }}
+{% endfor %}
+{% else %}
+- none found
+{% endif %}
+
+/* TECHNOLOGY */
+Built with: Eleventy 3.1.2, ESM, Nunjucks, Luxon
+Last commit date: {{ humans.lastCommitDate }}

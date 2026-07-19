@@ -1,0 +1,129 @@
+/* Print stylesheet — US Letter, loaded via media="print" in _includes/layouts/base.njk.
+   Hand-maintained plain CSS; copied to the site root by the `static/` passthrough
+   and served as /print.css.
+
+   The running header pulls its text from the <h1>, so it tracks site.title in
+   _data/site.js rather than duplicating it here. */
+
+.whitestone-nav {
+  display: none;
+}
+
+/* The @top-center / @bottom-center margin boxes are CSS Paged Media. Browsers
+   ignore them entirely — their own print dialog draws headers and footers — so
+   they only take effect in paged engines such as paged.js, WeasyPrint, or Prince.
+   The size/margin declarations on @page itself do work in browsers. */
+@page {
+  size: 8.5in 11in;
+  margin: 1in 0.5in;
+  @top-center {
+    content: string(sitename);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    color: #555;
+    vertical-align: bottom;
+    padding-bottom: 0.25in;
+  }
+  @bottom-center {
+    content: counter(page);
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 9pt;
+    color: #555;
+    vertical-align: top;
+    padding-top: 0.25in;
+  }
+}
+
+/* Source of the running header's text. */
+.header h1 {
+  string-set: sitename content(text);
+}
+
+body {
+  background: #fff;
+  color: #111;
+  font-size: 10.5pt;
+  line-height: 1.5;
+}
+
+/* The page box owns the margins now, so the screen container adds nothing. */
+.container {
+  max-width: none;
+  width: auto;
+  padding-left: 0;
+  padding-right: 0;
+  margin: 0;
+}
+
+/* Screen-only affordances. */
+.header .btn,
+.back-to-toc {
+  display: none;
+}
+
+.header {
+  margin-top: 0;
+}
+
+a {
+  color: #111;
+  text-decoration: none;
+}
+
+/* Keep blocks whole and headings attached to the text they introduce. */
+h1, h2, h3, h4, h5, h6 {
+  break-after: avoid;
+  break-inside: avoid;
+  color: #111;
+}
+
+pre, blockquote, table, figure, .footnote-definition {
+  break-inside: avoid;
+}
+
+img {
+  max-width: 100%;
+  filter: none;
+}
+
+/* Long code lines are cut off by the page edge unless they wrap. */
+.content pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  background: #fafafa;
+  border: 1px solid #bbb;
+}
+.content pre code, .content code {
+  color: #111;
+  font-size: 8.5pt;
+}
+/* hljs token colors would print as muddy gray; drop to solid ink. */
+.content pre code.hljs, .content pre code.hljs * {
+  color: #111;
+  filter: none;
+}
+.content p code, .content li code, .content td code, .content h3 code, .content h4 code, .content blockquote code {
+  background: transparent;
+  border: 1px solid #bbb;
+}
+.content table {
+  border-color: #bbb;
+  font-size: 9pt;
+}
+.content thead th, .content tbody td {
+  border-color: #bbb;
+  background: transparent;
+}
+/* The table of contents is excluded from print: its links are anchors that
+   don't resolve on paper, and the printed page numbers serve the same purpose. */
+#toc {
+  display: none;
+}
+
+.footer {
+  opacity: 1;
+  color: #555;
+  font-size: 8.5pt;
+  border-top: 1px solid #bbb;
+  padding-top: 0.5rem;
+}

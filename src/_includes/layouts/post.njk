@@ -1,0 +1,104 @@
+---
+layout: layouts/base.njk
+---
+{% import "macros/icons.njk" as icons %}
+{% set paperData = paper or site.paperDefaults %}
+{% set venueName = (paperData.venue and paperData.venue.name) or "" %}
+{% set venueDate = (paperData.venue and paperData.venue.date) or date %}
+{% set venueUrl = (paperData.venue and paperData.venue.url) or (paperData.buttons | buttonUrl("paper")) or ((page.url or "/") | absoluteUrl(site.url)) %}
+<main aria-label="Content">
+  <div class="container">
+    <article itemscope itemtype="http://schema.org/BlogPosting">
+      <header class="header">
+        <h1 itemprop="name headline">{{ title or site.title }}</h1>
+        {% if paperData.authors and paperData.authors.length %}
+          <h2>
+            <span itemprop="author">
+              {% for author in paperData.authors %}
+                <a href="{{ author.url or ((page.url or '/') ~ '#') }}">{{ author.name }}</a>{% if author.contribution %}<sup><small>*</small></sup>{% endif %}
+                {% if author.affiliation %}<br><em>{{ author.affiliation }}</em>{% endif %}{% if not loop.last %}, {% endif %}
+              {% endfor %}
+            </span>
+          </h2>
+        {% endif %}
+        {% if paperData.contribution %}
+          <p><sup><small>*</small></sup>{{ paperData.contribution }}</p>
+        {% endif %}
+        {% if paperData.buttons and paperData.buttons.length %}
+          <div>
+            {% for button in paperData.buttons %}
+              <a class="btn" href="{{ button.url }}">
+                {% if not button.no_icon %}
+                  {{ icons.icon((button.name or "") | lower) }}
+                  &nbsp;
+                {% endif %}
+                {{ button.name }}
+              </a>
+            {% endfor %}
+          </div>
+        {% endif %}
+        {% if venueName %}
+          <h2>
+            <a href="{{ venueUrl }}">
+              <span itemprop="isPartOf" itemscope itemtype="http://schema.org/Periodical"><span itemprop="name">{{ venueName }}</span></span>
+              {% if venueDate %}&nbsp;<time datetime="{{ venueDate | isoDate }}" itemprop="datePublished">{{ venueDate | yearDate }}</time>{% endif %}
+            </a>
+          </h2>
+        {% endif %}
+      </header>
+      <div class="content" itemprop="articleBody" id="content">
+        {% if toc %}
+          {# toc: true = top-level (h2) only; toc: full = every heading level. #}
+          <aside id="toc">
+            <nav aria-labelledby="toc-title">
+              <p id="toc-title"><strong>Table of contents</strong></p>
+              <div id="table-of-contents"></div>
+            </nav>
+          </aside>
+          <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const full = {{ "true" if toc == "full" else "false" }};
+            const selector = full
+              ? '#content > h2, #content > h3, #content > h4, #content > h5, #content > h6'
+              : '#content > h2';
+            const headings = [...document.querySelectorAll(selector)];
+            const root = document.createElement('ul');
+            let subsections;
+
+            headings.forEach((heading, index) => {
+              const level = Number(heading.tagName[1]);
+              heading.id ||= `section-${index + 1}`;
+              const item = document.createElement('li');
+              const link = document.createElement('a');
+              link.href = `#${heading.id}`;
+              link.textContent = heading.textContent;
+              item.append(link);
+              heading.insertAdjacentHTML('beforeend', ' <a class="back-to-toc" href="#toc" aria-label="Back to table of contents" title="Back to table of contents"><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="#000000" viewBox="0 0 256 256" aria-hidden="true"><path d="M205.66,117.66a8,8,0,0,1-11.32,0L136,59.31V216a8,8,0,0,1-16,0V59.31L61.66,117.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0l72,72A8,8,0,0,1,205.66,117.66Z"></path></svg></a>');
+
+              if (!full || level === 2) {
+                root.append(item);
+                subsections = null;
+                return;
+              }
+              if (!root.lastElementChild) return;
+              if (!subsections) {
+                subsections = document.createElement('ul');
+                subsections.className = 'toc-subsections';
+                root.lastElementChild.append(subsections);
+              }
+              item.className = `toc-level-${level}`;
+              subsections.append(item);
+            });
+
+            document.querySelector('#table-of-contents').append(root);
+          });
+          </script>
+        {% endif %}
+        {{ content | safe }}
+      </div>
+      {% if site.footerText %}
+        <footer class="footer">{{ site.footerText | safe }}</footer>
+      {% endif %}
+    </article>
+  </div>
+</main>
