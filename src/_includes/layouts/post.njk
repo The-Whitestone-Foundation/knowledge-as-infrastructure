@@ -6,7 +6,7 @@ layout: layouts/base.njk
 {% set venueName = (paperData.venue and paperData.venue.name) or "" %}
 {% set venueDate = (paperData.venue and paperData.venue.date) or date %}
 {% set venueUrl = (paperData.venue and paperData.venue.url) or (paperData.buttons | buttonUrl("paper")) or ((page.url or "/") | absoluteUrl(site.url)) %}
-<main aria-label="Content">
+<main aria-label="Content" data-pagefind-body>
   <div class="container">
     <article itemscope itemtype="http://schema.org/BlogPosting">
       <header class="header">
